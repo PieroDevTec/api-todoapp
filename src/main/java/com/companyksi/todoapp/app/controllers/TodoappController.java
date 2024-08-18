@@ -3,6 +3,9 @@ package com.companyksi.todoapp.app.controllers;
 import com.companyksi.todoapp.app.models.Todoapp;
 import com.companyksi.todoapp.app.services.TodoappService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,22 +18,27 @@ public class TodoappController {
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public List<Todoapp> todoappList(){
-        return serv.todoappList();
+        return  serv.todoappList();
+    }
+
+    @RequestMapping(value = "/todo/{cod}", method = RequestMethod.GET)
+    public ResponseEntity<Todoapp> todoappTodo(@PathVariable long cod){
+        return new ResponseEntity<Todoapp>(serv.todoappTodo(cod).get(),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public Todoapp todoappRegister(@RequestBody Todoapp todo){
-        return serv.todoappRegister(todo);
+    public ResponseEntity<Todoapp> todoappRegister(@RequestBody Todoapp todo){
+        return new ResponseEntity<Todoapp>(serv.todoappRegister(todo),HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/update" , method = RequestMethod.PUT)
-    public Todoapp todoappUpdate(@RequestBody Todoapp todo){
-        return serv.todoappUpdate(todo);
+    public ResponseEntity<Todoapp> todoappUpdate(@RequestBody Todoapp todo){
+        return new ResponseEntity<Todoapp>(serv.todoappUpdate(todo),HttpStatus.OK);
     }
     @RequestMapping(value = "/delete/{cod}",method = RequestMethod.DELETE)
-    public String todoappDelete(@PathVariable("cod") long cod){
+    public ResponseEntity<String> todoappDelete(@PathVariable("cod") long cod){
         serv.todoDelete(cod);
-        return "Delete Cod: "+cod+" Succesfully";
+        return new ResponseEntity<String>("Sucessfully Delete Cod: "+cod,HttpStatus.OK);
     }
 
 

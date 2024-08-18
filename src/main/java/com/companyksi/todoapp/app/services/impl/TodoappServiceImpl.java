@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoappServiceImpl implements TodoappService {
@@ -16,6 +17,12 @@ public class TodoappServiceImpl implements TodoappService {
     public List<Todoapp> todoappList() {
         return repo.findAll();
     }
+
+    @Override
+    public Optional<Todoapp> todoappTodo(long cod) {
+        return repo.findById(cod);
+    }
+
 
     @Override
     public Todoapp todoappRegister(Todoapp todoapp) {
